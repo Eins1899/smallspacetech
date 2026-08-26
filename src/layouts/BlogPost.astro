@@ -1,0 +1,22 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+}
+const { title, description, pubDate } = Astro.props;
+---
+<BaseLayout title={`${title} | Small Space Tech`} description={description}>
+  <article class="post">
+    <p class="disclosure-banner">
+      This post contains affiliate links. If you buy through them, I may earn a commission at no extra cost to you.
+    </p>
+    <h1>{title}</h1>
+    <p class="pubdate">{pubDate.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })}</p>
+    <div class="content">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

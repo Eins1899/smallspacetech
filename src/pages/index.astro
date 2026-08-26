@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout
+  title="Small Space Tech — Gear for Tiny Home Offices"
+  description="Honest reviews and buying guides for desks, monitors, and gadgets that actually fit small home offices and apartments."
+>
+  <section class="hero">
+    <h1>Gear that actually fits your small space</h1>
+    <p>Reviews and buying guides for home office tech in apartments and tiny rooms — no wasted space, no wasted money.</p>
+  </section>
+
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <a href={`/blog/${post.slug}/`}>
+          <h2>{post.data.title}</h2>
+          <p>{post.data.description}</p>
+          <span class="pubdate">{post.data.pubDate.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
