@@ -1,0 +1,64 @@
+---
+const { title, description, current } = Astro.props;
+import "../styles/global.css";
+const nav = [
+  { href: "/", label: "Home", key: "home" },
+  { href: "/reviews", label: "Reviews", key: "reviews" },
+  { href: "/about", label: "About", key: "about" },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.svg" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <div class="brand-mark">S</div>
+        <div style="display:flex;flex-direction:column;line-height:1.05">
+          <span class="brand-name">Small Space Tech</span>
+          <span class="brand-tag">Bought it. Used it. Reviewed it.</span>
+        </div>
+      </a>
+      <nav class="site-nav">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={current === n.key ? "page" : undefined}>{n.label}</a>
+        ))}
+        <a class="btn" style="margin-left:8px" href="/newsletter">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+
+  <main><slot /></main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-col" style="max-width:320px">
+        <span class="brand-name">Small Space Tech</span>
+        <span style="font-size:14px;line-height:1.55;color:#767b86">Desks, storage, power and light for rooms that do more than one job.</span>
+      </div>
+      <div class="footer-col">
+        <span class="eyebrow">Site</span>
+        <a href="/reviews">All reviews</a>
+        <a href="/about">About</a>
+        <a href="/newsletter">Newsletter</a>
+      </div>
+      <div class="footer-col">
+        <span class="eyebrow">Legal</span>
+        <a href="/affiliate-disclosure">Affiliate disclosure</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/about">Contact</a>
+      </div>
+    </div>
+    <div class="wrap footer-note">© {new Date().getFullYear()} Small Space Tech · As an affiliate we may earn from qualifying purchases.</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,20 @@
+---
+/*
+  Use inside a post (see the .mdx note in README-REDESIGN.md), or in an .astro page:
+  <ProductCard name="Wayfair adjustable desk" price="£29.98" specs={[["Width","60 cm"]]}
+    verdict="Would buy again" href="https://..." cta="See it at Wayfair" note="photo: desk in his room" />
+*/
+const { price, specs = [], verdict, status, href, cta = "See it", note } = Astro.props;
+---
+<div class="product">
+  {note && <slot name="image"><svg class="ph" viewBox="0 0 660 200" preserveAspectRatio="none" style="border:0;border-radius:0"><defs><pattern id="pcp" width="9" height="9" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="9" stroke="#dcdee4" stroke-width="3"/></pattern></defs><rect width="660" height="200" fill="url(#pcp)"/><text x="330" y="105" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#767b86">{note}</text></svg></slot>}
+  <div class="product-meta">
+    <dl class="specs">
+      {price && <div class="spec"><dt>Price paid</dt><dd>{price}</dd></div>}
+      {specs.map(([k, v]) => <div class="spec"><dt>{k}</dt><dd>{v}</dd></div>)}
+      {verdict && <div class="spec"><dt>Verdict</dt><dd class="good">{verdict}</dd></div>}
+      {status && <div class="spec"><dt>Status</dt><dd class="warn">{status}</dd></div>}
+    </dl>
+    <a class={status ? "btn btn--ghost" : "btn"} href={href} rel="sponsored nofollow noopener" target="_blank">{cta} →</a>
+  </div>
+</div>

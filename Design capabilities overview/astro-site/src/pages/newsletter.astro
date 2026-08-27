@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../components/BaseLayout.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate - a.data.pubDate);
+const latest = posts[0];
+---
+<BaseLayout current="newsletter" title="Newsletter — Small Space Tech"
+  description="One small-space review a week. What we bought, what it cost, and whether it stayed.">
+  <div class="wrap center-page">
+    <div class="inner">
+      <div class="eyebrow eyebrow--accent">The list</div>
+      <h1>One small-space review a week.</h1>
+      <p>What we bought, what it cost, and whether it stayed in the room. No sponsored posts, no roundups of things we've never touched.</p>
+      <form class="signup" action="" method="post" style="width:100%;max-width:440px">
+        <input type="email" name="email" placeholder="you@email.com" required style="flex:1;font-size:16px;padding:14px 16px" />
+        <button class="btn" type="submit" style="font-size:16px;padding:14px 24px">Subscribe</button>
+      </form>
+      <span class="mono" style="font-size:11.5px;color:var(--faint)">No spam. Unsubscribe in one click.</span>
+
+      {latest && (
+        <div style="margin-top:22px;width:100%;padding:26px;border:1px solid var(--rule);border-radius:12px;text-align:left;display:flex;flex-direction:column;gap:14px">
+          <span class="eyebrow">What the last one looked like</span>
+          <a href={`/blog/${latest.slug}`} style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:-0.01em">{latest.data.title}</span>
+            <span style="font-size:15px;line-height:1.55;color:#767b86">{latest.data.description} Read it →</span>
+          </a>
+        </div>
+      )}
+    </div>
+  </div>
+</BaseLayout>

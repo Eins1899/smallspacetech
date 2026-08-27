@@ -1,0 +1,14 @@
+---
+const { post, archive = false } = Astro.props;
+const d = post.data;
+const date = d.pubDate.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+---
+<a class={archive ? "row row--archive" : "row"} href={`/blog/${post.slug}`}>
+  <time datetime={d.pubDate.toISOString()}>{date}</time>
+  <span class="row-copy">
+    <span class="row-title">{d.title}</span>
+    <span class="row-desc">{d.description}</span>
+  </span>
+  {archive && <span class="row-price">{d.pricePaid}</span>}
+  <span class="row-cat">{d.category.toUpperCase()}</span>
+</a>

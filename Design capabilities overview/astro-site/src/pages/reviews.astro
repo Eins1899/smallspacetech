@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../components/BaseLayout.astro";
+import PostRow from "../components/PostRow.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate - a.data.pubDate);
+
+const cats = ["Desks", "Storage", "Power", "Light", "Audio"];
+const counts = cats.map((c) => [c, posts.filter((p) => p.data.category === c).length]);
+
+const groups = [];
+for (const post of posts) {
+  const label = post.data.pubDate.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  const last = groups[groups.length - 1];
+  if (last && last.label === label) last.posts.push(post);
+  else groups.push({ label, posts: [post] });
+}
+---
+<BaseLayout current="reviews" title="All reviews — Small Space Tech"
+  description="Everything we've bought and lived with, newest first. Prices are what we actually paid.">
+  <div class="wrap" style="padding-top:64px">
+    <div style="display:flex;flex-direction:column;gap:16px;padding-bottom:28px;border-bottom:1px solid var(--rule)">
+      <h1 style="margin:0;font-family:var(--serif);font-size:44px;line-height:1.08;font-weight:500;letter-spacing:-0.02em">All reviews</h1>
+      <p style="margin:0;font-size:17px;color:var(--muted);max-width:560px">Everything we've bought and lived with, newest first. Prices are what we actually paid.</p>
+      <div class="filters">
+        <span class="filter" aria-current="true">ALL · {posts.length}</span>
+        {counts.filter(([, n]) => n > 0).map(([c, n]) => <span class="filter">{c.toUpperCase()} · {n}</span>)}
+      </div>
+    </div>
+
+    {groups.map((g) => (
+      <>
+        <div class="eyebrow" style="margin:36px 0 4px">{g.label}</div>
+        <div class="rows">{g.posts.map((post) => <PostRow post={post} archive={true} />)}</div>
+      </>
+    ))}
+  </div>
+</BaseLayout>
