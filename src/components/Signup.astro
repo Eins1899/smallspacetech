@@ -1,0 +1,25 @@
+---
+const { dark = false, heading = "One review a week, nothing else.", body = "What we bought, what it cost, and whether it stayed in the room. No sponsored posts." } = Astro.props;
+/* Replace action="" with your provider's form endpoint (Buttondown, Mailchimp, Kit). */
+---
+{dark ? (
+  <div class="cta-dark">
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:480px">
+      <h2>{heading}</h2>
+      <p>{body}</p>
+    </div>
+    <form class="signup" action="" method="post">
+      <input type="email" name="email" placeholder="you@email.com" required />
+      <button class="btn" type="submit">Subscribe</button>
+    </form>
+  </div>
+) : (
+  <div class="cta-light">
+    <h3>{heading}</h3>
+    <p>{body}</p>
+    <form class="signup" action="" method="post">
+      <input type="email" name="email" placeholder="you@email.com" required style="flex:1" />
+      <button class="btn" type="submit">Subscribe</button>
+    </form>
+  </div>
+)}
